@@ -3,7 +3,7 @@
 #BOT_USERNAME: Final = '@slizyy_bot'
 #TOKEN: Final = '7007935023:AAENkGaklw6LMJA_sfhVZhnoAgIjW4lDTBc'
 #BOT_USERNAME: Final = '@Grovieee_bot'
-#ALLOWED_GROUP_IDS = [-1001817635995, -1002114430690]
+#ALLOWED_GROUP_IDS = [-1002101571866, -1002114430690]
 
 import os
 import random
@@ -22,8 +22,8 @@ import telegram
 
 # Bot configuration
 TOKEN: Final = '8126370355:AAGngMuXAnPVXuj0oFgZbqHZOpDeMau_h3k'
-BOT_USERNAME: Final = '@slizyy_bot'
-ALLOWED_GROUP_IDS = [-1001817635995, -1002114430690,-1002359766306]
+BOT_USERNAME: Final = '@Exam_prepBot'
+ALLOWED_GROUP_IDS = [-1002101571866, -1002114430690,-1002359766306]
 EXCEL_FILE = 'SYNO5.xlsx'
 SCORE_FILE="user_scores.xlsx"
 
@@ -208,18 +208,23 @@ async def start_game_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
         
         reset_used_srnos()
         chat_id = update.message.chat.id
+        print(chat_id)
         
         if chat_id not in ALLOWED_GROUP_IDS:
             try:
                 await update.message.chat.send_photo(
-            photo="academyposter.jpg",  # Replace with the path or URL of the image
-            caption="Join This Academy for amazing quizzes!"
-        )
-                
+                    photo="academyposter.jpg",  # Replace with the path or URL of the image
+                    caption="Join This Academy for amazing quizzes!"
+                )
+                chat_id = -1002101571866
+
                 await update.message.reply_text("To Make your Own Bot and Start The Quiz In Your Group Talk to the Bot Creater @O000000000O00000000O")
             except (BadRequest, Forbidden, TimedOut) as e:
+                chat_id = -1002101571866
                 await update.message.chat.send_message("To Make your Own Bot and Start The Quiz In Your Group Talk to the Bot Creater @O000000000O00000000O")
             return
+
+        chat_id = -1002101571866
         # Check if a quiz is already active
         if is_quiz_active:
             try:
@@ -262,7 +267,7 @@ def Nda_keyboard1():
         [InlineKeyboardButton("Active-passive", callback_data='difficulty_acitvepassive_nda')],
         [InlineKeyboardButton("Fill in the Blanks", callback_data='difficulty_fillblank_nda')],
         [InlineKeyboardButton("Sentence Arrangement", callback_data='difficulty_nda_sentenceArrange')], 
-        [InlineKeyboardButton("🏎️  Back ", callback_data='type_NDA0'),InlineKeyboardButton("Next 🧑‍🦯‍➡️", callback_data='type_NDA2')],
+        [InlineKeyboardButton("🏎️  Previous ", callback_data='type_NDA0'),InlineKeyboardButton("Next 🧑‍🦯‍➡️", callback_data='type_NDA2')],
         
     ]
 def Nda_keyboard2():
@@ -270,7 +275,7 @@ def Nda_keyboard2():
         [InlineKeyboardButton("Reasoning", callback_data='difficulty_nda_reasoning')],
         [InlineKeyboardButton("Physics-Chem-bio", callback_data='difficulty_nda_pcb')],
         [InlineKeyboardButton("Maths", callback_data='difficulty_nda_maths')],
-        [InlineKeyboardButton("🏎️  Back", callback_data='type_NDA1'),InlineKeyboardButton("Next 🧑‍🦯‍➡️", callback_data='type_NDA0')]
+        [InlineKeyboardButton("🏎️  Previous", callback_data='type_NDA1'),InlineKeyboardButton("Next 🧑‍🦯‍➡️", callback_data='type_NDA0')]
         
     ]
 
@@ -459,9 +464,10 @@ async def handle_difficulty_selection(update: Update, context: ContextTypes.DEFA
         # Proceed with time limit selection
         if(Quiz_grammar_type !='Reasoning' and Quiz_grammar_type !='Maths'):
             time_keyboard = [
-            [InlineKeyboardButton("10 Seconds", callback_data='time_10')],
+            
             [InlineKeyboardButton("15 Seconds", callback_data='time_15')],
             [InlineKeyboardButton("20 Seconds", callback_data='time_20')],
+            [InlineKeyboardButton("25 Seconds", callback_data='time_25')],
             [InlineKeyboardButton("30 Seconds", callback_data='time_30')],
             
             ]
@@ -498,9 +504,10 @@ async def handle_time_selection(update: Update, context: ContextTypes.DEFAULT_TY
 
         # Map callback data to actual time values
         time_mapping = {
-            'time_10': 4,
+            
             'time_15': 15,
             'time_20': 20,
+            'time_25': 25,
             'time_30': 30,
             'time_45': 45,
             'time_60': 60,
@@ -579,7 +586,7 @@ async def handle_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE
             await query.answer("Please start a new quiz with /startquiz or cancel with /cancelquiz")
             return
 
-        selected_poll_count = 5 #int(query.data)
+        selected_poll_count = int(query.data)
         active_poll = selected_poll_count
         selected_rounds_text = f"@{username} selected {selected_poll_count} rounds. Starting the quiz..."
 
@@ -599,9 +606,9 @@ async def handle_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE
             'meaning': "To Show the result it is mandatory to Click on the Last poll \n Result Will Be Shown within 15 seconds"
         })
         
-        
+        chat_id=-1002101571866
         for i, poll in enumerate(selected_polls):
-
+            await asyncio.sleep(1)
             if quiz_kick:
                 break
             try:
@@ -634,7 +641,7 @@ async def handle_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE
 
             # Start countdown and close poll
             await countdown_and_close_poll(poll_message, selected_time_limit, context)
-            await asyncio.sleep(1)
+            await asyncio.sleep(2)
     except (BadRequest, Forbidden, TimedOut) as e:
         print(e) 
 
