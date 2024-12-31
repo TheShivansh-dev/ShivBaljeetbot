@@ -3,7 +3,7 @@
 #BOT_USERNAME: Final = '@slizyy_bot'
 #TOKEN: Final = '7007935023:AAENkGaklw6LMJA_sfhVZhnoAgIjW4lDTBc'
 #BOT_USERNAME: Final = '@Grovieee_bot'
-#ALLOWED_GROUP_IDS = [-1002101571866, -1002114430690]
+#ALLOWED_GROUP_IDS = [-1002359766306, -1002114430690]
 
 import os
 import random
@@ -19,11 +19,10 @@ from openpyxl import load_workbook, Workbook
 import time
 from telegram.error import Forbidden,BadRequest, TimedOut
 import telegram
-
 # Bot configuration
 TOKEN: Final = '8126370355:AAGngMuXAnPVXuj0oFgZbqHZOpDeMau_h3k'
 BOT_USERNAME: Final = '@Exam_prepBot'
-ALLOWED_GROUP_IDS = [-1002101571866, -1002114430690,-1002359766306]
+ALLOWED_GROUP_IDS = [-1002359766306, -1002114430690,-1002359766306]
 EXCEL_FILE = 'SYNO5.xlsx'
 SCORE_FILE="user_scores.xlsx"
 
@@ -216,15 +215,15 @@ async def start_game_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
                     photo="academyposter.jpg",  # Replace with the path or URL of the image
                     caption="Join This Academy for amazing quizzes!"
                 )
-                chat_id = -1002101571866
+                chat_id = -1002359766306
 
                 await update.message.reply_text("To Make your Own Bot and Start The Quiz In Your Group Talk to the Bot Creater @O000000000O00000000O")
             except (BadRequest, Forbidden, TimedOut) as e:
-                chat_id = -1002101571866
+                chat_id = -1002359766306
                 await update.message.chat.send_message("To Make your Own Bot and Start The Quiz In Your Group Talk to the Bot Creater @O000000000O00000000O")
             return
 
-        chat_id = -1002101571866
+        chat_id = -1002359766306
         # Check if a quiz is already active
         if is_quiz_active:
             try:
@@ -606,7 +605,7 @@ async def handle_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE
             'meaning': "To Show the result it is mandatory to Click on the Last poll \n Result Will Be Shown within 15 seconds"
         })
         
-        chat_id=-1002101571866
+        chat_id=-1002359766306
         for i, poll in enumerate(selected_polls):
             await asyncio.sleep(1)
             if quiz_kick:
