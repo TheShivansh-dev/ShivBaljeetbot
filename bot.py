@@ -3,8 +3,13 @@
 #BOT_USERNAME: Final = '@slizyy_bot'
 #TOKEN: Final = '7007935023:AAENkGaklw6LMJA_sfhVZhnoAgIjW4lDTBc'
 #BOT_USERNAME: Final = '@Grovieee_bot'
-#ALLOWED_GROUP_IDS = [-1002359766306, -1002114430690]
+#ALLOWED_GROUP_IDS = [-1001817635995, -1002114430690]
 
+#TOKEN: Final = '8126370355:AAGngMuXAnPVXuj0oFgZbqHZOpDeMau_h3k'
+#BOT_USERNAME: Final = '@Exam_prepBot'
+
+#TOKEN: Final = '6991746723:AAHx0aqfY-S_PelA80TRh3aKBFe0yRWsLL8'
+#BOT_USERNAME: Final = '@Aaradhya_bot'
 import os
 import random
 import re
@@ -19,10 +24,14 @@ from openpyxl import load_workbook, Workbook
 import time
 from telegram.error import Forbidden,BadRequest, TimedOut
 import telegram
+
+
+
+TOKEN: Final = '7938454369:AAEEcc9ILmAoVS3S23WD6KQ8FLPSRS4Pvs4'
+BOT_USERNAME: Final = '@slizzyy_bot'
 # Bot configuration
-TOKEN: Final = '8126370355:AAGngMuXAnPVXuj0oFgZbqHZOpDeMau_h3k'
-BOT_USERNAME: Final = '@Exam_prepBot'
-ALLOWED_GROUP_IDS = [-1002359766306, -1002114430690,-1002359766306]
+
+ALLOWED_GROUP_IDS = [-1001817635995, -1002114430690,-1001817635995]
 EXCEL_FILE = 'SYNO5.xlsx'
 SCORE_FILE="user_scores.xlsx"
 
@@ -44,6 +53,7 @@ cancel_active = False
 display_chat=0
 Quiz_grammar_type =''
 quiz_kick= False
+StudyStuffgrp=False
 
 # Load quiz data from Excel
 used_srnos = set()
@@ -211,19 +221,19 @@ async def start_game_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
         
         if chat_id not in ALLOWED_GROUP_IDS:
             try:
-                await update.message.chat.send_photo(
-                    photo="academyposter.jpg",  # Replace with the path or URL of the image
-                    caption="Join This Academy for amazing quizzes!"
-                )
-                chat_id = -1002359766306
+                #await update.message.chat.send_photo(
+                    #photo="academyposter.jpg",  # Replace with the path or URL of the image
+                    #caption="Join This Academy for amazing quizzes!"
+                #)
+                chat_id = -1001817635995
 
                 await update.message.reply_text("To Make your Own Bot and Start The Quiz In Your Group Talk to the Bot Creater @O000000000O00000000O")
             except (BadRequest, Forbidden, TimedOut) as e:
-                chat_id = -1002359766306
+                chat_id = -1001817635995
                 await update.message.chat.send_message("To Make your Own Bot and Start The Quiz In Your Group Talk to the Bot Creater @O000000000O00000000O")
             return
 
-        chat_id = -1002359766306
+        chat_id = -1001817635995
         # Check if a quiz is already active
         if is_quiz_active:
             try:
@@ -272,7 +282,7 @@ def Nda_keyboard1():
 def Nda_keyboard2():
     return [
         [InlineKeyboardButton("Reasoning", callback_data='difficulty_nda_reasoning')],
-        [InlineKeyboardButton("Physics-Chem-bio", callback_data='difficulty_nda_pcb')],
+        #[InlineKeyboardButton("Physics-Chem-bio", callback_data='difficulty_nda_pcb')],
         [InlineKeyboardButton("Maths", callback_data='difficulty_nda_maths')],
         [InlineKeyboardButton("🏎️  Previous", callback_data='type_NDA1'),InlineKeyboardButton("Next 🧑‍🦯‍➡️", callback_data='type_NDA0')]
         
@@ -394,7 +404,7 @@ async def handle_type_selection(update: Update, context: ContextTypes.DEFAULT_TY
 # Handle difficulty selection
 async def handle_difficulty_selection(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        global EXCEL_FILE, Quiz_grammar_type
+        global EXCEL_FILE, Quiz_grammar_type,StudyStuffgrp
         query = update.callback_query
         username = query.from_user.username or query.from_user.first_name
 
@@ -407,46 +417,61 @@ async def handle_difficulty_selection(update: Update, context: ContextTypes.DEFA
         difficulty_message = ''
 
         if query.data == 'difficulty_synonyms':
+            StudyStuffgrp = False
             EXCEL_FILE = 'SYNO5.xlsx'
             difficulty_message = "Synonyms"
         elif query.data == 'difficulty_antonyms':
+            StudyStuffgrp = False
             EXCEL_FILE = 'Antonyms5.xlsx'
             difficulty_message = "Antonyms"
         elif query.data == 'difficulty_spellcorr':
+            StudyStuffgrp = False
             EXCEL_FILE = 'spellCorrection4.xlsx'
             difficulty_message = "Spelling Correction"
+
         elif query.data == 'difficulty_sentcorr':
+            StudyStuffgrp = False
             EXCEL_FILE = 'sentenceCorr4.xlsx'
             difficulty_message = "Sentence Correction"
         #==========================For NDA==============================
         elif query.data == 'difficulty_synonyms_nda':
+            StudyStuffgrp = False
             EXCEL_FILE = 'NDA_Synonyms1.xlsx'
             difficulty_message = "Synonyms"
         elif query.data == 'difficulty_acitvepassive_nda':
+            StudyStuffgrp = False
             EXCEL_FILE = 'NDA_active_passive_voice1.xlsx'
             difficulty_message = "Active passive Voice"
         elif query.data == 'difficulty_fillblank_nda':
+            StudyStuffgrp = False
             EXCEL_FILE = 'NDA_fillblank1.xlsx'
             difficulty_message = "Fill in the blanks"
         elif query.data == 'difficulty_idiomphrase_nda':
+            StudyStuffgrp = False
             EXCEL_FILE = 'NDA_idiom_phrase1.xlsx'
             difficulty_message = "Idiom Phrase"
         elif query.data == 'difficulty_nda_sentenceArrange':
+            StudyStuffgrp = False
             EXCEL_FILE = 'Nda_SentenceArrangement1_updated.xlsx'
             difficulty_message = "Sentence Arrangement"
         elif query.data == 'difficulty_nda_ows':
+            StudyStuffgrp = False
             EXCEL_FILE = 'Nda_1onewordsubstitute_updated.xlsx'
             difficulty_message = "One word Substitution"
         elif query.data == 'difficulty_nda_antonyms':
+            StudyStuffgrp = False
             EXCEL_FILE = 'Nda_Antonyms_updated.xlsx'
             difficulty_message = "Antonyms"
         elif query.data == 'difficulty_nda_reasoning':
+            StudyStuffgrp = True
             EXCEL_FILE = 'Nda_Reasoning1_updated.xlsx'
             difficulty_message = "Reasoning"
         elif query.data == 'difficulty_nda_pcb':
-            EXCEL_FILE = 'Nda_PCB_hindi1_updated.xlsx.xlsx'
+            StudyStuffgrp = True
+            EXCEL_FILE = 'Nda_PCB_hindi1_updated.xlsx.'
             difficulty_message = "Physics-Chem-bio"
         elif query.data == 'difficulty_nda_maths':
+            StudyStuffgrp = True
             EXCEL_FILE = 'Nda_Maths_updated.xlsx'
             difficulty_message = "Maths"
 
@@ -576,7 +601,7 @@ async def cancel_quiz_command(update: Update, context: ContextTypes.DEFAULT_TYPE
 # Handle button click and start quizzes
 async def handle_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
-        global selected_poll_count,active_poll,cancel_active,quiz_kick
+        global selected_poll_count,active_poll,cancel_active,quiz_kick,StudyStuffgrp
         query = update.callback_query
         username = query.from_user.username or query.from_user.first_name
       
@@ -605,7 +630,15 @@ async def handle_button_click(update: Update, context: ContextTypes.DEFAULT_TYPE
             'meaning': "To Show the result it is mandatory to Click on the Last poll \n Result Will Be Shown within 15 seconds"
         })
         
-        chat_id=-1002359766306
+        chat_id=-1001817635995
+        if StudyStuffgrp == False:
+            chat_id=-1001817635995   #ExamPrepGroup
+        else:
+            await context.bot.send_message(
+                    chat_id=-1001817635995, 
+                    text="To play Those Specific Quizzes Participate There https://t.me/+7fnb1zurYqE2OWQ9"
+                )
+            chat_id=-1002101571866   #StudyStuffGroup
         for i, poll in enumerate(selected_polls):
             await asyncio.sleep(1)
             if quiz_kick:
@@ -930,7 +963,7 @@ def main():
     application.add_handler(CallbackQueryHandler(handle_button_click, pattern=r'^\d+$'))
     application.add_handler(PollAnswerHandler(handle_poll_answer))
     application.add_handler(CommandHandler('cancelquiz', cancel_quiz_command))
-    application.add_handler(CommandHandler('myrank', my_rank))
+    application.add_handler(CommandHandler('myscore', my_rank))
     application.add_handler(CommandHandler('top10score', select_top_10_users))
     application.add_handler(CommandHandler('deleteuserscores0404', delete_user_scores))
     application.add_handler(CommandHandler('downloadscoreiesp', download_scores_command))
